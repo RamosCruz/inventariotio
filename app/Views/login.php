@@ -11,6 +11,24 @@
     <title>Login</title>
   </head>
   <body>
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+        <h3>Bienbenido al inventario</h3>
+          <form action="<?php echo base_url('/login') ?>" method="post">
+            <label for="usuario">Usuario</label>
+            <input type="text" name="usuario" class="form-control" required="true" >
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" required="true">
+            <br>
+            <button class="btn btn-primary">Entrar</button>
+          </form>
+        </div>          
+        <div class="col-sm-4"></div>  
+      </div>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
