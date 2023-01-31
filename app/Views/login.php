@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es_MX">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
           <form action="<?php echo base_url('/login') ?>" method="post">
             <label for="usuario">Usuario</label>
             <input type="text" name="usuario" class="form-control" required="true" >
-            <label for="password">Password</label>
+            <label for="password">Contraseña</label>
             <input type="password" name="password" class="form-control" required="true">
             <br>
             <button class="btn btn-primary">Entrar</button>
