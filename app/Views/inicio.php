@@ -12,7 +12,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <p class="navbar-brand" href="#"><?php echo session('usuario') ?><span class="badge bg-secondary"><?php echo session('type') ?></span></p>
+    <p class="navbar-brand" href="#"><?php echo session('usuario') ?>  <span class="badge bg-secondary">Area: <?php echo session('type') ?></span></p>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

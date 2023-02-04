@@ -14,9 +14,9 @@
     <div class="container">
       
       <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4">
-        <h3>Bienbenido al inventario</h3>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+        <h4>Bienbenido al inventario</h4>
           <form action="<?php echo base_url('/login') ?>" method="post">
             <label for="usuario">Usuario</label>
             <input type="text" name="usuario" class="form-control" required="true" >
@@ -26,7 +26,7 @@
             <button class="btn btn-primary">Entrar</button>
           </form>
         </div>          
-        <div class="col-sm-4"></div>  
+        <div class="col-sm-3"></div>  
       </div>
     </div>
     <!-- Optional JavaScript -->
