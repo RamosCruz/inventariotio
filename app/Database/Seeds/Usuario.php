@@ -8,9 +8,9 @@ class Usuario extends Seeder
 {
     public function run()
     {
-        $usuario = "leo";
-        $password = password_hash("alm23", PASSWORD_DEFAULT);
-        $type = "almacen";
+        $usuario = "marissa";
+        $password = password_hash("c0nt23", PASSWORD_DEFAULT);
+        $type = "contabilidad";
         $data = [
             'usuario' => $usuario,
             'password'    => $password,
@@ -19,5 +19,7 @@ class Usuario extends Seeder
 
         // Using Query Builder
         $this->db->table('t_usuarios')->insert($data);
+
+        //crear usuario desde terminal php spark db:seed usuario
     }
 }

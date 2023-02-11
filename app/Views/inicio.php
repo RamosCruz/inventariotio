@@ -25,7 +25,9 @@
         </ul>
     </div>
     </nav>
-    <h1>Hola, estas en el inicio!</h1>
+
+    
+    <?php echo view('roles/'.session('type'))?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
