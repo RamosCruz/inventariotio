@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-MX">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -11,8 +11,10 @@
     <title>Inicio</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <p class="navbar-brand" href="#"><?php echo session('usuario') ?>  <span class="badge bg-secondary">Area: <?php echo session('type') ?></span></p>
+    <nav class="navbar navbar-light" style="background-color: #FF5733;">
+    <p class="navbar-brand" href="#"><?php echo session('usuario') ?>  <span class="badge bg-secondary">Area: <?php echo session('type') ?></span>
+      <img src="<?= base_url('assets/logo.png');?>" alt="..." height="36">
+    </p>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
