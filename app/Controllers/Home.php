@@ -11,7 +11,10 @@ class Home extends BaseController
     }
     public function inicio()
     {
-        return view('inicio');
+        $json = file_get_contents(base_url('assets/datos/csvjson.json'));
+        $obj = json_decode($json);
+        $data['json'] = $obj;
+        return view('inicio',$data);
     }
     public function login()
     {
