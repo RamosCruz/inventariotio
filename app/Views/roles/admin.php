@@ -3,22 +3,33 @@ echo '<div class="container">
 <table id="inventario" class="table table-striped table-bordered">
     <thead class="thead-dark">
         <tr>
-            <th scope="col" data-field="prenom" data-filter-control="input" data-sortable="true">C&oacute;digo</th>
-            <th scope="col" data-field="date" data-filter-control="select" data-sortable="true">Familia</th>
-            <th scope="col" data-field="examen" data-filter-control="select" data-sortable="true">Descripci&oacute;n</th>
-            <th scope="col" data-field="note" data-sortable="true">Existencia</th>
+            <th scope="col">C&oacute;digo</th>
+            <th scope="col">Familia</th>
+            <th scope="col">Descripci&oacute;n</th>
+            <th scope="col">Facturas y Remisiones</th>
+            <th scope="col">Agraria</th>
+            <th scope="col">Suma Total</th>
+            <th scope="col">Existencia</th>
+            <th scope="col">Diferencia</th>
+            <th scope="col">Anotaci&oacute;n</th>
         </tr>
     </thead>
-    <tbody class="">' ;
+    <tbody>' ;
     
 foreach ( $json as $valor) {
-
     echo '<tr>' ;
-    echo '<td scope="row">' .$valor->codigo. '</td>' ;
+    echo '<td class="col-auto" scope="row">' .$valor->codigo. '</td>' ;
     echo '<td>' .$valor->familia. '</td>' ;
-    echo '<td>' .$valor->descripcion. '</td>' ;
-    echo '<td>' .$valor->existencia. '</td>' ;
+    echo '<td class="col-auto">' .$valor->descripcion. '</td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput" type="number" codigo="' .$valor->codigo. '-facturasyremisiones" value="'.$valor->facturasyremisiones.'"></td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor->codigo. '-agraria" value="' .$valor->agraria. '"></td>' ;
+    echo '<td class="col-auto">' .$valor->sumatotal. '</td>' ;
+    echo '<td class="col-auto">' .$valor->existencia. '</td>' ;
+    echo '<td class="col-auto">' .$valor->diferencia. '</td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput" type="text" codigo="' .$valor->codigo. '-nota" value="' .$valor->nota. '"></td>' ;
     echo '</tr>' ;
+    
+    
 
 }
 echo '</tbody>
@@ -28,7 +39,9 @@ echo '</tbody>
 
     <script>
         $(document).ready(function () {
-    $('#inventario').DataTable({
+
+    
+    var table = $('#inventario').DataTable({
         scrollY: 400, //tamaño de alto de tabla
         pageLength: 100, //numero de registros por paginado
         ordering: false, //no ordenar tabla
@@ -40,7 +53,25 @@ echo '</tbody>
                 target: 1, //en la columna 1
                 visible: false, //no mostrar
                 searchable: false, //tampoco buscar
-            }],
+            },
+            {   
+                width: 10, 
+                targets: 3
+            }
+        ],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) 
+        {
+                if ( aData[7] == 0 )
+                {
+                    $(nRow).css('background-color', '#B2F4B7')
+                }if ( aData[7] < 0 )
+                {
+                    $(nRow).css('background-color', '#F4B2B2')
+                }if ( aData[7] > 0 )
+                {
+                    $(nRow).css('background-color', '#B2DCF4')
+                }
+        },
         language: {
             "processing": "Procesando...",
             "lengthMenu": "Mostrar _MENU_ registros",
@@ -284,6 +315,15 @@ echo '</tbody>
             }
         } //leguaje en español, ingles por default
     }).on( 'page.dt', function () {$('.dataTables_scrollBody').scrollTop(0);});
+
+    $('#inventario tbody').on('change', '.ltinput', function () {
+        var input = $( this ).attr( 'codigo' );
+        var codigo = "aqui nos quedamos...";
+        //var data = table.row( this.closest( 'td' ) ).data();
+        var data = $( this ).val();
+        alert(input+' / ' + data);
+    });
+    
 });
     </script>
   

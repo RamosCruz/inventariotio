@@ -13,6 +13,26 @@ class Home extends BaseController
     {
         $json = file_get_contents(base_url('assets/datos/csvjson.json'));
         $obj = json_decode($json);
+        
+        
+        /*$fname = base_url("assets/datos/alix.csv");
+        // open csv file
+        if (!($fp = fopen($fname, 'r'))) {
+            die("Can't open file...");
+        }
+        
+        //read csv headers
+        $key = fgetcsv($fp,"1024",",");
+        
+        // parse csv rows into array
+        $json = array();
+            while ($row = fgetcsv($fp,"1024",",")) {
+            $json[] = array_combine($key, $row);
+        }
+        
+        // release file handle
+        fclose($fp);*/
+        
         $data['json'] = $obj;
         return view('inicio',$data);
     }
