@@ -8,10 +8,12 @@ echo '<div class="container">
             <th scope="col">Descripci&oacute;n</th>
             <th scope="col">Facturas y Remisiones</th>
             <th scope="col">Agraria</th>
+            <th scope="col">Bodega</th>
             <th scope="col">Suma Total</th>
             <th scope="col">Existencia</th>
             <th scope="col">Diferencia</th>
             <th scope="col">Anotaci&oacute;n</th>
+            <th scope="col">Guardar</th>
         </tr>
     </thead>
     <tbody>' ;
@@ -23,10 +25,12 @@ foreach ( $json as $valor) {
     echo '<td class="col-auto">' .$valor->descripcion. '</td>' ;
     echo '<td class="col-auto"><input class="form-control ltinput" type="number" codigo="' .$valor->codigo. '-facturasyremisiones" value="'.$valor->facturasyremisiones.'"></td>' ;
     echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor->codigo. '-agraria" value="' .$valor->agraria. '"></td>' ;
-    echo '<td class="col-auto">' .$valor->sumatotal. '</td>' ;
-    echo '<td class="col-auto">' .$valor->existencia. '</td>' ;
-    echo '<td class="col-auto">' .$valor->diferencia. '</td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor->codigo. '-bodega" value="' .$valor->bodega. '"></td>' ;
+    echo '<td class="col-auto" id="' .$valor->codigo. '-sumatotal">' .$valor->sumatotal. '</td>' ;
+    echo '<td class="col-auto" id="' .$valor->codigo. '-existencia">' .$valor->existencia. '</td>' ;
+    echo '<td class="col-auto" id="' .$valor->codigo. '-diferencia">' .$valor->diferencia. '</td>' ;
     echo '<td class="col-auto"><input class="form-control ltinput" type="text" codigo="' .$valor->codigo. '-nota" value="' .$valor->nota. '"></td>' ;
+    echo '<td class="col-auto"><button codigo="' .$valor->codigo. '" type="button" class="btn btn-primary guardar"><iconify-icon icon="material-symbols:save-as-outline"></iconify-icon></button></td>' ;
     echo '</tr>' ;
     
     
@@ -61,13 +65,13 @@ echo '</tbody>
         ],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) 
         {
-                if ( aData[7] == 0 )
+                if ( aData[8] == 0 )
                 {
                     $(nRow).css('background-color', '#B2F4B7')
-                }if ( aData[7] < 0 )
+                }if ( aData[8] < 0 )
                 {
                     $(nRow).css('background-color', '#F4B2B2')
-                }if ( aData[7] > 0 )
+                }if ( aData[8] > 0 )
                 {
                     $(nRow).css('background-color', '#B2DCF4')
                 }
@@ -318,13 +322,81 @@ echo '</tbody>
 
     $('#inventario tbody').on('change', '.ltinput', function () {
         var input = $( this ).attr( 'codigo' );
-        var codigo = "aqui nos quedamos...";
+        const myArray = input.split("-");
+        var codigo = myArray[0];
+        var campo = myArray[1];
         //var data = table.row( this.closest( 'td' ) ).data();
-        var data = $( this ).val();
-        alert(input+' / ' + data);
+        var valor = $( this ).val();
+        cambioysuma(codigo, campo, valor);
     });
+
+    $('#inventario tbody').on( 'click', '.guardar', function () {
+    var data = table.row( $(this).parents('tr') ).data();
+        var tcodigo=data[0];
+        var tfamilia=data[1];
+        var tdescripcion=data[2];
+        var tfacturasyremisiones = $('input[codigo="'+tcodigo+'-facturasyremisiones"]').val();
+        var tagraria = $('input[codigo="'+tcodigo+'-agraria"]').val();
+        var tbodega = $('input[codigo="'+tcodigo+'-bodega"]').val();
+        var tsumatotal = $("#"+tcodigo+"-sumatotal").html();
+        var texistencia = $("#"+tcodigo+"-existencia").html();
+        var tdiferencia = $("#"+tcodigo+"-diferencia").html();
+        var tnota = $('input[codigo="'+tcodigo+'-nota"]').val();
+        var arregloPost = {
+            "codigo": tcodigo,
+            "facturasyremisiones": tfacturasyremisiones,
+            "agraria": tagraria,
+            "bodega": tbodega,
+            "sumatotal": tsumatotal,
+            "existencia": texistencia,
+            "diferencia": tdiferencia,
+            "nota": tnota
+        }
+        guardarelemento(arregloPost);
+    } );
     
 });
+
+function cambioysuma(codigo, campo, valor)
+{
+    var sumatotal = 0;
+    
+    
+    if(campo=="facturasyremisiones")
+    {
+        var agraria = parseInt($('input[codigo="'+codigo+'-agraria"]').val());
+        var bodega = parseInt($('input[codigo="'+codigo+'-bodega"]').val());
+        var sumatotal = parseInt(valor) + agraria + bodega;
+        $("#"+codigo+"-sumatotal").html(sumatotal);
+    }else if(campo=="agraria")
+    {
+        var facturasyremisiones = parseInt($('input[codigo="'+codigo+'-facturasyremisiones"]').val());
+        var bodega = parseInt($('input[codigo="'+codigo+'-bodega"]').val());
+        var sumatotal = parseInt(valor) + facturasyremisiones + bodega;
+        $("#"+codigo+"-sumatotal").html(sumatotal);
+    }else if(campo=="bodega")
+    {
+        var facturasyremisiones = parseInt($('input[codigo="'+codigo+'-facturasyremisiones"]').val());
+        var agraria = parseInt($('input[codigo="'+codigo+'-agraria"]').val());
+        var sumatotal = parseInt(valor) + facturasyremisiones + agraria;
+        $("#"+codigo+"-sumatotal").html(sumatotal);
+    }
+
+    var diferencia = parseInt($("#"+codigo+"-existencia").html())-$("#"+codigo+"-sumatotal").html();
+    $("#"+codigo+"-diferencia").html(diferencia)
+
+     
+
+     
+}
+function guardarelemento(arreglo)
+{
+    $.post("<?php echo base_url('cambiar')?>",   // url
+       arreglo, // data to be submit
+       function(data, status, jqXHR) {// success callback
+                console.log(data);
+        })
+}
+
     </script>
-  
     
