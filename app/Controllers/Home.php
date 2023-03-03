@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
     use App\Models\Usuarios;
+    use App\Models\Consultas;
 class Home extends BaseController
 {
     public function index()
@@ -11,8 +12,12 @@ class Home extends BaseController
     }
     public function inicio()
     {
-        $json = file_get_contents(base_url('assets/datos/csvjson.json'));
+        /*$json = file_get_contents(base_url('assets/datos/csvjson.json'));
         $obj = json_decode($json);
+        $data['json'] = $obj;*/
+
+        $consulta= new Consultas();
+        $obj = $consulta->obtenerDatos();
         $data['json'] = $obj;
         return view('inicio',$data);
     }
@@ -44,6 +49,6 @@ class Home extends BaseController
     }
     public function cambiar()
     {
-        echo true;
+        echo "Hola";
     }
 }

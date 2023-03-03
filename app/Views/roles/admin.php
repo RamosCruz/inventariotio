@@ -18,19 +18,19 @@ echo '<div class="container">
     </thead>
     <tbody>' ;
     
-foreach ( $json as $valor) {
+foreach ($json as $valor) {
     echo '<tr>' ;
-    echo '<td class="col-auto" scope="row">' .$valor->codigo. '</td>' ;
-    echo '<td>' .$valor->familia. '</td>' ;
-    echo '<td class="col-auto">' .$valor->descripcion. '</td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput" type="number" codigo="' .$valor->codigo. '-facturasyremisiones" value="'.$valor->facturasyremisiones.'"></td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor->codigo. '-agraria" value="' .$valor->agraria. '"></td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor->codigo. '-bodega" value="' .$valor->bodega. '"></td>' ;
-    echo '<td class="col-auto" id="' .$valor->codigo. '-sumatotal">' .$valor->sumatotal. '</td>' ;
-    echo '<td class="col-auto" id="' .$valor->codigo. '-existencia">' .$valor->existencia. '</td>' ;
-    echo '<td class="col-auto" id="' .$valor->codigo. '-diferencia">' .$valor->diferencia. '</td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput" type="text" codigo="' .$valor->codigo. '-nota" value="' .$valor->nota. '"></td>' ;
-    echo '<td class="col-auto"><button codigo="' .$valor->codigo. '" type="button" class="btn btn-primary guardar"><iconify-icon icon="material-symbols:save-as-outline"></iconify-icon></button></td>' ;
+    echo '<td class="col-auto" scope="row">' .$valor['codigo']. '</td>' ;
+    echo '<td>' .$valor['familia']. '</td>' ;
+    echo '<td class="col-auto">' .$valor['descripcion']. '</td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput" type="number" codigo="' .$valor['codigo']. '-facturasyremisiones" value="'.$valor['facturasyremisiones'].'"></td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-agraria" value="' .$valor['agraria']. '"></td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-bodega" value="' .$valor['bodega']. '"></td>' ;
+    echo '<td class="col-auto" id="' .$valor['codigo']. '-sumatotal">' .$valor['sumatotal']. '</td>' ;
+    echo '<td class="col-auto" id="' .$valor['codigo']. '-existencia">' .$valor['existencia']. '</td>' ;
+    echo '<td class="col-auto" id="' .$valor['codigo']. '-diferencia">' .$valor['diferencia']. '</td>' ;
+    echo '<td class="col-auto"><input class="form-control ltinput" type="text" codigo="' .$valor['codigo']. '-nota" value="' .$valor['nota']. '"></td>' ;
+    echo '<td class="col-auto"><button codigo="' .$valor['codigo']. '" type="button" class="btn btn-primary guardar"><iconify-icon icon="material-symbols:save-as-outline"></iconify-icon></button></td>' ;
     echo '</tr>' ;
     
     
