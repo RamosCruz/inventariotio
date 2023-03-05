@@ -18,7 +18,9 @@ class Home extends BaseController
 
         $consulta= new Consultas();
         $obj = $consulta->obtenerDatos();
+        $obj2 = $consulta->getFamilias();
         $data['json'] = $obj;
+        $data['familias'] = $obj2;
         return view('inicio',$data);
     }
     public function login()
@@ -49,6 +51,23 @@ class Home extends BaseController
     }
     public function cambiar()
     {
-        echo "Hola";
+        $id = [
+            'codigo' => $this->request->getPost('codigo')
+        ];
+
+        $setData = [
+            'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
+            'agraria' => $this->request->getPost('agraria'),
+            'bodega' => $this->request->getPost('bodega'),
+            'sumatotal' => $this->request->getPost('sumatotal'),
+            'existencia' => $this->request->getPost('existencia'),
+            'diferencia' => $this->request->getPost('diferencia'),
+            'nota' => $this->request->getPost('nota')
+        ];
+        
+        $consulta= new Consultas();
+        $obj = $consulta->actualizarDatos($id,$setData);
+
+        echo $obj;
     }
 }

@@ -1,5 +1,9 @@
+<div class="container">
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Nuevo registro</button>
+</div>
+<br>
 <?php 
-echo '<div class="container">
+echo '<div class="container-xl">
 <table id="inventario" class="table table-striped table-bordered">
     <thead class="thead-dark">
         <tr>
@@ -19,18 +23,18 @@ echo '<div class="container">
     <tbody>' ;
     
 foreach ($json as $valor) {
-    echo '<tr>' ;
+    echo '<tr id="' .$valor['codigo']. '-fila">' ;
     echo '<td class="col-auto" scope="row">' .$valor['codigo']. '</td>' ;
     echo '<td>' .$valor['familia']. '</td>' ;
     echo '<td class="col-auto">' .$valor['descripcion']. '</td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput" type="number" codigo="' .$valor['codigo']. '-facturasyremisiones" value="'.$valor['facturasyremisiones'].'"></td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-agraria" value="' .$valor['agraria']. '"></td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-bodega" value="' .$valor['bodega']. '"></td>' ;
+    echo '<td class="col-auto"><input min="0" class="form-control ltinput" type="number" codigo="' .$valor['codigo']. '-facturasyremisiones" value="'.$valor['facturasyremisiones'].'"></td>' ;
+    echo '<td class="col-auto"><input min="0" class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-agraria" value="' .$valor['agraria']. '"></td>' ;
+    echo '<td class="col-auto"><input min="0" class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-bodega" value="' .$valor['bodega']. '"></td>' ;
     echo '<td class="col-auto" id="' .$valor['codigo']. '-sumatotal">' .$valor['sumatotal']. '</td>' ;
     echo '<td class="col-auto" id="' .$valor['codigo']. '-existencia">' .$valor['existencia']. '</td>' ;
     echo '<td class="col-auto" id="' .$valor['codigo']. '-diferencia">' .$valor['diferencia']. '</td>' ;
-    echo '<td class="col-auto"><input class="form-control ltinput" type="text" codigo="' .$valor['codigo']. '-nota" value="' .$valor['nota']. '"></td>' ;
-    echo '<td class="col-auto"><button codigo="' .$valor['codigo']. '" type="button" class="btn btn-primary guardar"><iconify-icon icon="material-symbols:save-as-outline"></iconify-icon></button></td>' ;
+    echo '<td class="col-auto"><input min="0" class="form-control ltinput" type="text" codigo="' .$valor['codigo']. '-nota" value="' .$valor['nota']. '"></td>' ;
+    echo '<td class="col-auto"><button id="' .$valor['codigo']. '-boton" codigo="' .$valor['codigo']. '" type="button" class="btn btn-primary guardar" disabled><iconify-icon icon="material-symbols:save-as-outline"></iconify-icon></button></td>' ;
     echo '</tr>' ;
     
     
@@ -42,11 +46,83 @@ echo '</tbody>
 ?>
 
     <script>
+        var tabladinamica = null;
         $(document).ready(function () {
-
-    
-    var table = $('#inventario').DataTable({
-        scrollY: 400, //tamaño de alto de tabla
+        tabladinamica = $('#inventario').DataTable({
+        
+        dom: 'Bfrtip',
+        buttons: [
+            {extend:'excel',exportOptions: {format: {
+            body: function ( data, row, column, node ) {
+            
+            //check if type is input using jquery
+            if( data.substring(0, 1)=="<"){
+                return $(data).val();
+            }else{
+                return data;
+            }
+            
+            
+            }
+            }
+            }}
+            , {extend:'pdf',exportOptions: {format: {
+            body: function ( data, row, column, node ) {
+            
+            //check if type is input using jquery
+            if( data.substring(0, 1)=="<"){
+                return $(data).val();
+            }else{
+                return data;
+            }
+            
+            
+            }
+            }
+            }}
+            , {extend:'csv',exportOptions: {format: {
+            body: function ( data, row, column, node ) {
+            
+            //check if type is input using jquery
+            if( data.substring(0, 1)=="<"){
+                return $(data).val();
+            }else{
+                return data;
+            }
+            
+            
+            }
+            }
+            }}
+            , {extend:'copy',exportOptions: {format: {
+            body: function ( data, row, column, node ) {
+            
+            //check if type is input using jquery
+            if( data.substring(0, 1)=="<"){
+                return $(data).val();
+            }else{
+                return data;
+            }
+            
+            
+            }
+            }
+            }}
+            , {extend:'print',exportOptions: {format: {
+            body: function ( data, row, column, node ) {
+            //check if type is input using jquery
+            if( data.substring(0, 1)=="<"){
+                return $(data).val();
+            }else{
+                return data;
+            }
+            
+            
+            }
+            }
+            }}
+        ],
+        scrollY: 450, //tamaño de alto de tabla
         pageLength: 100, //numero de registros por paginado
         ordering: false, //no ordenar tabla
         rowGroup: {
@@ -325,13 +401,15 @@ echo '</tbody>
         const myArray = input.split("-");
         var codigo = myArray[0];
         var campo = myArray[1];
-        //var data = table.row( this.closest( 'td' ) ).data();
+        //var data = tabladinamica.row( this.closest( 'td' ) ).data();
         var valor = $( this ).val();
+        
+        $("#"+codigo+"-boton").removeAttr('disabled');
         cambioysuma(codigo, campo, valor);
     });
 
     $('#inventario tbody').on( 'click', '.guardar', function () {
-    var data = table.row( $(this).parents('tr') ).data();
+    var data = tabladinamica.row( $(this).parents('tr') ).data();
         var tcodigo=data[0];
         var tfamilia=data[1];
         var tdescripcion=data[2];
@@ -394,9 +472,94 @@ function guardarelemento(arreglo)
     $.post("<?php echo base_url('cambiar')?>",   // url
        arreglo, // data to be submit
        function(data, status, jqXHR) {// success callback
-                console.log(data);
+            if(status=='success')
+            {
+                Swal.fire({
+                title: 'Hecho!',
+                timer: 1000,
+                showCancelButton: false,
+                showConfirmButton: false,
+                icon: 'success'
+                });
+
+                if ( parseInt($("#"+arreglo.codigo+"-diferencia").html()) == 0 )
+                {
+                    $("#"+arreglo.codigo+"-fila").css('background-color', '#B2F4B7')
+                }if ( parseInt($("#"+arreglo.codigo+"-diferencia").html()) < 0 )
+                {
+                    $("#"+arreglo.codigo+"-fila").css('background-color', '#F4B2B2')
+                }if ( parseInt($("#"+arreglo.codigo+"-diferencia").html()) > 0 )
+                {
+                    $("#"+arreglo.codigo+"-fila").css('background-color', '#B2DCF4')
+                }
+                $("#"+arreglo.codigo+"-boton").prop('disabled',true);
+                
+            }else{
+                Swal.fire({
+                title: 'Error!',
+                timer: 1000,
+                showCancelButton: false,
+                showConfirmButton: false,
+                icon: 'error'
+                });
+            }
+            
         })
 }
 
+//modal nuevo registro
+
+$('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('New message to ' + recipient)
+  modal.find('.modal-body input').val(recipient)
+})
+
     </script>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">C&oacute;digo:</label>
+            <input type="number" class="form-control" id="n-codigo" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Familia:</label>
+            <?php echo '<select class="form-control" aria-label="Default select example" id="n-familia" required>
+                <option selected value="">Selecciona una familia</option>';
+                foreach($familias as $select) {             
+                echo '<option value="'.$select['familia'].'">'.$select['familia'].'</option>';
+                }
+            echo '</select>'; ?>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Descripci&oacute;n:</label>
+            <input class="form-control" id="n-descripcion" required></input>
+          </div>
+          
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <input type="submit" class="btn btn-primary"></input>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
     
