@@ -3,8 +3,10 @@
 namespace App\Controllers;
     use App\Models\Usuarios;
     use App\Models\Consultas;
+    use CodeIgniter\Files\File;
 class Home extends BaseController
 {
+    protected $helpers = ['form'];
     public function index()
     {
         $mensaje = session('Hola soy Luis');
@@ -18,9 +20,9 @@ class Home extends BaseController
 
         $consulta= new Consultas();
         $obj = $consulta->obtenerDatos();
-        $obj2 = $consulta->getFamilias();
+        //$obj2 = $consulta->getFamilias();
         $data['json'] = $obj;
-        $data['familias'] = $obj2;
+        $data['errors'] = [];
         return view('inicio',$data);
     }
     public function login()
@@ -70,4 +72,46 @@ class Home extends BaseController
 
         echo $obj;
     }
+
+    public function upload()
+    {
+        $img = $this->request->getFile('userfile');
+
+        if (! $img->hasMoved()) {
+            $filepath = WRITEPATH . 'uploads/' . $img->store();
+
+            //$data = ['uploaded_fileinfo' => new File($filepath)];
+
+            //print($filepath);
+            $file = fopen($filepath, 'r');
+            while (($line = fgetcsv($file)) !== FALSE) {
+            $reg = [
+                "codigo"=>$line[0],
+                "familia"=>$line[1],
+                "descripcion"=>$line[2],
+                'facturasyremisiones' => 0,
+                'agraria' => 0,
+                'bodega' => 0,
+                'sumatotal' => 0,
+                "existencia"=>$line[3],
+                "diferencia"=>$line[3]//((int)$line[3]-2*((int)$line[3]))
+            ];
+
+            $myArray[] =$reg;
+            
+            }
+            array_shift($myArray);
+            unlink($filepath);
+            $consulta= new Consultas();
+            $obj = $consulta->actualizarTabla($myArray);
+            fclose($file);
+            //echo $obj;
+            return redirect()->to(base_url('/inicio'))->with('messaje','1');
+        }
+
+        //$data = ['errors' => 'The file has already been moved.'];
+
+        //return view('upload_form', $data);
+    }
+    
 }

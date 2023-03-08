@@ -36,6 +36,7 @@ $routes->get('/inicio', 'Home::inicio');
 $routes->post('/login', 'Home::login');
 $routes->get('/salir', 'Home::salir');
 $routes->post('/cambiar', 'Home::cambiar');
+$routes->post('/upload', 'Home::upload');
 
 /*
  * --------------------------------------------------------------------

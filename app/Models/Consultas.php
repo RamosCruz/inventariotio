@@ -23,13 +23,33 @@
                 return FALSE;
             }
         }
-        public function getFamilias(){
+        public function getFamilias(){//ya no ocupara, lo datos se actulizaran a travez de un csv
             $builder = $this->db->table('t_inventario');
             $builder->distinct();
             $builder->select('familia');
             $builder->orderBy('familia','ASC');
             return $builder->get()->getResultArray();
 
+        }
+        public function actualizarTabla($myArray){
+            $builder = $this->db->table('t_inventario');
+            $builder->emptyTable(); 
+
+            foreach ($myArray as $linea)
+            {
+                $builder1 = $this->db->table('t_inventario');
+                $builder1->insert($linea);
+            }
+
+            
+            if ($this->db->affectedRows() > 0)
+            {
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }
         }
     }
 ?>
