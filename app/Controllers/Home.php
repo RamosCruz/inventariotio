@@ -59,6 +59,13 @@ class Home extends BaseController
 
         $setData = [
             'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
+            'contiene' => $this->request->getPost('contiene'),
+            'e' => $this->request->getPost('e'),
+            'f' => $this->request->getPost('f'),
+            'g' => $this->request->getPost('g'),
+            'h' => $this->request->getPost('h'),
+            'j' => $this->request->getPost('j'),
+            'piezas' => $this->request->getPost('piezas'),
             'agraria' => $this->request->getPost('agraria'),
             'bodega' => $this->request->getPost('bodega'),
             'sumatotal' => $this->request->getPost('sumatotal'),
@@ -92,6 +99,14 @@ class Home extends BaseController
                 'facturasyremisiones' => 0,
                 'agraria' => 0,
                 'bodega' => 0,
+                'bodega' => 0,
+                'contiene' => 0,
+                'e' => 0,
+                'f' => 0,
+                'g' => 0,
+                'h' => 0,
+                'j' => 0,
+                'piezas' => 0,
                 'sumatotal' => 0,
                 "existencia"=>$line[3],
                 "diferencia"=>$line[3]//((int)$line[3]-2*((int)$line[3]))
@@ -113,5 +128,29 @@ class Home extends BaseController
 
         //return view('upload_form', $data);
     }
-    
+    public function historial()
+    {
+        return view('historial');
+    }
+    public function guardarhistorial()
+    {
+        $fecha = [
+            'fecha' => $this->request->getPost('fecha')
+        ];
+
+        /*$setData = [
+            'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
+            'agraria' => $this->request->getPost('agraria'),
+            'bodega' => $this->request->getPost('bodega'),
+            'sumatotal' => $this->request->getPost('sumatotal'),
+            'existencia' => $this->request->getPost('existencia'),
+            'diferencia' => $this->request->getPost('diferencia'),
+            'nota' => $this->request->getPost('nota')
+        ];*/
+        
+        $consulta= new Consultas();
+        $obj = $consulta->selecthistorial($fecha);
+        echo json_encode($obj);
+        //echo false;
+    }
 }

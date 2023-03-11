@@ -51,5 +51,10 @@
                 return FALSE;
             }
         }
+        public function selecthistorial($fecha){
+            $builder = $this->db->table('t_historial');
+            $builder->where($fecha);
+            return $builder->get()->getResultArray();
+        }
     }
 ?>

@@ -25,16 +25,28 @@
     <p class="navbar-brand" href="#"><?php echo session('usuario') ?>  <span class="badge bg-secondary">Area: <?php echo session('type') ?></span>
       <img src="<?= base_url('assets/img/logo.png');?>" alt="..." height="36">
     </p>
-    
-    
+
     <a class="nav-link navbar-toggler" href="<?php echo base_url('/salir') ?>">Salir <iconify-icon icon="ion:exit-outline"></iconify-icon></a>
-    
     </nav>
 <br>
-
-
     
-    <?php echo view('inicio/'.session('type'))?>
+<div class="container">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a type="button" class="btn btn-primary" href="<?php echo base_url('/inicio') ?>">Volver al inicio</a>
+    </div>
+</div>
+   <?php 
+
+   if(session('type')=="contabilidad"|| session('type')=="admin")
+   {
+    echo view('historial/'.session('type'));
+   }else{
+    echo '<div class="container"><div class="alert alert-danger" role="alert">
+    Usted no tiene privilegios para acceder a este sitio.
+  </div></div>';
+   }
+   
+   ?>
     
 
     

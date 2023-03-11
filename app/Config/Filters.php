@@ -64,7 +64,8 @@ class Filters extends BaseConfig
     public array $filters = [
         "SessionAdmin"=>[
             "before"=>[
-                "/Inicio"
+                "/inicio",
+                "/historial"
             ]
         ]
     ];
