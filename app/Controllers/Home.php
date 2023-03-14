@@ -56,23 +56,36 @@ class Home extends BaseController
         $id = [
             'codigo' => $this->request->getPost('codigo')
         ];
-
-        $setData = [
-            'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
-            'contiene' => $this->request->getPost('contiene'),
-            'e' => $this->request->getPost('e'),
-            'f' => $this->request->getPost('f'),
-            'g' => $this->request->getPost('g'),
-            'h' => $this->request->getPost('h'),
-            'j' => $this->request->getPost('j'),
-            'piezas' => $this->request->getPost('piezas'),
-            'agraria' => $this->request->getPost('agraria'),
-            'bodega' => $this->request->getPost('bodega'),
-            'sumatotal' => $this->request->getPost('sumatotal'),
-            'existencia' => $this->request->getPost('existencia'),
-            'diferencia' => $this->request->getPost('diferencia'),
-            'nota' => $this->request->getPost('nota')
-        ];
+        $contiene = $this->request->getPost('contiene');
+        if($contiene==null){
+            $setData = [
+                'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
+                'agraria' => $this->request->getPost('agraria'),
+                'bodega' => $this->request->getPost('bodega'),
+                'sumatotal' => $this->request->getPost('sumatotal'),
+                'existencia' => $this->request->getPost('existencia'),
+                'diferencia' => $this->request->getPost('diferencia'),
+                'nota' => $this->request->getPost('nota')
+            ];
+        }else{
+            $setData = [
+                'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
+                'contiene' => $contiene,
+                'e' => $this->request->getPost('e'),
+                'f' => $this->request->getPost('f'),
+                'g' => $this->request->getPost('g'),
+                'h' => $this->request->getPost('h'),
+                'j' => $this->request->getPost('j'),
+                'piezas' => $this->request->getPost('piezas'),
+                'agraria' => $this->request->getPost('agraria'),
+                'bodega' => $this->request->getPost('bodega'),
+                'sumatotal' => $this->request->getPost('sumatotal'),
+                'existencia' => $this->request->getPost('existencia'),
+                'diferencia' => $this->request->getPost('diferencia'),
+                'nota' => $this->request->getPost('nota')
+            ];
+        }
+        
         
         $consulta= new Consultas();
         $obj = $consulta->actualizarDatos($id,$setData);
@@ -132,25 +145,33 @@ class Home extends BaseController
     {
         return view('historial');
     }
+    public function existehistorial(){
+        date_default_timezone_set('America/Mexico_City');
+        $fechaActual = date("d-m-Y");
+        $consulta= new Consultas();
+        $obj = $consulta->selecthistorial($fechaActual);
+        echo json_encode($obj);
+    }
     public function guardarhistorial()
     {
-        $fecha = [
-            'fecha' => $this->request->getPost('fecha')
-        ];
-
-        /*$setData = [
-            'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
-            'agraria' => $this->request->getPost('agraria'),
-            'bodega' => $this->request->getPost('bodega'),
-            'sumatotal' => $this->request->getPost('sumatotal'),
-            'existencia' => $this->request->getPost('existencia'),
-            'diferencia' => $this->request->getPost('diferencia'),
-            'nota' => $this->request->getPost('nota')
-        ];*/
         
+        date_default_timezone_set('America/Mexico_City');
+        $fechaActual = date("d-m-Y");
         $consulta= new Consultas();
-        $obj = $consulta->selecthistorial($fecha);
-        echo json_encode($obj);
-        //echo false;
+        $obj = $consulta->obtenerDatos();
+        $jsonres = json_encode($obj);
+        $setData = [
+            'fecha' => $fechaActual,
+            'jsonres' => $jsonres
+        ];
+        $consulta2= new Consultas();
+        $obj2 = $consulta2->sethistorial($setData);
+
+        echo json_encode($obj2);
     }
+    public function actualizarhistorial()
+    {
+        
+    }
+
 }

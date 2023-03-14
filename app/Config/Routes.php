@@ -38,7 +38,9 @@ $routes->get('/salir', 'Home::salir');
 $routes->post('/cambiar', 'Home::cambiar');
 $routes->post('/upload', 'Home::upload');
 $routes->get('/historial', 'Home::historial');
+$routes->get('/existehistorial', 'Home::existehistorial');
 $routes->get('/guardarhistorial', 'Home::guardarhistorial');
+$routes->get('/actualizarhistorial', 'Home::actualizarhistorial');
 
 /*
  * --------------------------------------------------------------------

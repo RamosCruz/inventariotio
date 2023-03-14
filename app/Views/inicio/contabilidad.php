@@ -11,7 +11,7 @@
                 Historial
                 </button>
                 <div class="dropdown-menu">
-                <a class="dropdown-item disabled" id="guardarh">Guardar historial</a>
+                <a class="dropdown-item" id="guardarh">Guardar historial</a>
                 <a class="dropdown-item" href="<?php echo base_url('/historial') ?>">Ver historial</a>
                 </div>
             </div>
@@ -83,9 +83,9 @@ echo '</tbody>
 <script>
             var tabladinamica = null;
             $(document).ready(function () 
-            {
-                    tabladinamica = $('#inventario').DataTable({
-                    
+            { 
+                $("#guardarh").removeClass('disabled');
+                tabladinamica = $('#inventario').DataTable({
                     dom: 'Bfrtip',
                     buttons: [
                         {extend:'excel',exportOptions: {format: {
@@ -148,6 +148,11 @@ echo '</tbody>
                     },  //agrupar por familia, columna 1. (codigo es columna 0)
                     columnDefs: [ //funcion de columna
                         {
+                            target: 0, //en la columna 0
+                            visible: false, //no mostrar
+                            searchable: false, //tampoco buscar
+                        },
+                        {
                             target: 1, //en la columna 1
                             visible: false, //no mostrar
                             searchable: false, //tampoco buscar
@@ -157,8 +162,7 @@ echo '</tbody>
                             targets: 3
                         }
                     ],
-                    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) 
-                    {
+                    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ){
                             if ( aData[8] == 0 )
                             {
                                 $(nRow).css('background-color', '#B2F4B7')
@@ -427,7 +431,6 @@ echo '</tbody>
                     $("#guardarh").addClass('disabled');
                     cambioysuma(codigo, campo, valor);
                 });
-
                 $('#inventario tbody').on( 'click', '.guardar', function () {
                 var data = tabladinamica.row( $(this).parents('tr') ).data();
                     var tcodigo=data[0];
@@ -455,51 +458,11 @@ echo '</tbody>
                     
                 } ); 
                 $('#guardarh').click(function(){
-
-                    let date = new Date()
-
-                    let day = date.getDate()
-                    let month = date.getMonth() + 1
-                    let year = date.getFullYear()
-                    var fecha = '';
-                    if(month < 10){
-                        fecha =`${day}-0${month}-${year}`;
-                    }else{
-                        fecha =`${day}-${month}-${year}`;
-                    }
-                    $.get("<?php echo base_url('guardarhistorial')?>",   // url
-                    {"fecha":fecha}, // data to be submit
-                    function(data, status, jqXHR) {// success callback
-                        console.log(data);
-                            if(status=='success')
-                            {
-                                Swal.fire({
-                                title: 'Hecho!',
-                                timer: 1000,
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                                icon: 'success'
-                                });
-
-                                $("#guardarh").addClass('disabled');
-                                
-                                
-                            }else{
-                                Swal.fire({
-                                title: 'Error!',
-                                timer: 2000,
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                                icon: 'error'
-                                });
-                            }
-                            
-                        })
-                }); 
+                    existehistorial();
+                });
         }); //fin del function ready
 
-        function cambioysuma(codigo, campo, valor)
-        {
+        function cambioysuma(codigo, campo, valor){
             var sumatotal = 0;
             
             
@@ -525,8 +488,7 @@ echo '</tbody>
 
             
         }
-        function guardarelemento(arreglo)
-        {
+        function guardarelemento(arreglo){
             $.post("<?php echo base_url('cambiar')?>",   // url
             arreglo, // data to be submit
             function(data, status, jqXHR) {// success callback
@@ -565,6 +527,61 @@ echo '</tbody>
                     }
                     
                 })
+        }
+        function existehistorial(){
+            $.ajax({
+                type: "GET",
+                url: "<?php echo base_url('existehistorial')?>",
+                dataType:'JSON',
+                data: {"fecha":"hola"},
+                success: function(response){
+                    console.log(response);
+                    if(response.length==0){
+                        guardarhistorial();
+                    }else{
+                        Swal.fire({
+                        title: 'Ya existe el historial.',
+                        text: "¿Desea actualizarlo?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                            'Exito!',
+                            'Actualizado',
+                            'success'
+                            )
+                        }
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        function guardarhistorial(){
+           $.ajax({
+                type: "GET",
+                url: "<?php echo base_url('guardarhistorial')?>",
+                dataType:'JSON',
+                data: {"fecha":"hola"},
+                success: function(response){
+                    console.log(response);
+                    Swal.fire({
+                        title: 'Se guardo con exito!',
+                        timer: 2000,
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        icon: 'success'
+                        });
+                },
+                error: function (error) {
+                }
+            });
         }
 
         //modal nuevo registro

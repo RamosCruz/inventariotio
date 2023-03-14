@@ -53,8 +53,20 @@
         }
         public function selecthistorial($fecha){
             $builder = $this->db->table('t_historial');
-            $builder->where($fecha);
+            $builder->where('fecha',$fecha);
             return $builder->get()->getResultArray();
+        }
+        public function sethistorial($setData){
+            $builder1 = $this->db->table('t_historial');
+            $builder1->insert($setData);
+            if ($this->db->affectedRows() > 0)
+            {
+                return [true];
+            }
+            else
+            {
+                return [false];
+            }
         }
     }
 ?>
