@@ -171,7 +171,21 @@ class Home extends BaseController
     }
     public function actualizarhistorial()
     {
-        
+        date_default_timezone_set('America/Mexico_City');
+        $fechaActual = date("d-m-Y");
+        $consulta= new Consultas();
+        $obj = $consulta->obtenerDatos();
+        $jsonres = json_encode($obj);
+        $fecha = [
+            'fecha' => $fechaActual
+        ];
+        $setData = [
+            'jsonres' => $jsonres
+        ];
+        $consulta2= new Consultas();
+        $obj2 = $consulta2->updatehistorial($fecha,$setData);
+
+        echo json_encode($obj2);
     }
 
 }

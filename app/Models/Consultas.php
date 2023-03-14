@@ -68,5 +68,19 @@
                 return [false];
             }
         }
+        public function updatehistorial($fecha,$setData){
+            $builder = $this->db->table('t_historial');
+            $builder->set($setData);
+            $builder->where('fecha',$fecha);
+            $builder->update();
+            if ($this->db->affectedRows() > 0)
+            {
+                return [true];
+            }
+            else
+            {
+                return [false];
+            }
+        }
     }
 ?>

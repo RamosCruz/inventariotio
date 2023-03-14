@@ -549,11 +549,7 @@ echo '</tbody>
                         confirmButtonText: 'Si'
                         }).then((result) => {
                         if (result.isConfirmed) {
-                            Swal.fire(
-                            'Exito!',
-                            'Actualizado',
-                            'success'
-                            )
+                            actualizarhistorial();
                         }
                         })
                     }
@@ -573,6 +569,26 @@ echo '</tbody>
                     console.log(response);
                     Swal.fire({
                         title: 'Se guardo con exito!',
+                        timer: 2000,
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        icon: 'success'
+                        });
+                },
+                error: function (error) {
+                }
+            });
+        }
+        function actualizarhistorial(){
+           $.ajax({
+                type: "GET",
+                url: "<?php echo base_url('actualizarhistorial')?>",
+                dataType:'JSON',
+                data: {"fecha":"hola"},
+                success: function(response){
+                    console.log(response);
+                    Swal.fire({
+                        title: 'Se actualizo con exito!',
                         timer: 2000,
                         showCancelButton: false,
                         showConfirmButton: false,
