@@ -56,8 +56,8 @@ class Home extends BaseController
         $id = [
             'codigo' => $this->request->getPost('codigo')
         ];
-        $contiene = $this->request->getPost('contiene');
-        if($contiene==null){
+        $actualizar = $this->request->getPost('actualizar');
+        if($actualizar=="contabilidad"){
             $setData = [
                 'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
                 'agraria' => $this->request->getPost('agraria'),
@@ -67,10 +67,16 @@ class Home extends BaseController
                 'diferencia' => $this->request->getPost('diferencia'),
                 'nota' => $this->request->getPost('nota')
             ];
-        }else{
+        }else if($actualizar=="alix"){
+            $setData = [
+                'existencia' => $this->request->getPost('existencia'),
+                'diferencia' => $this->request->getPost('diferencia')
+            ];
+        }
+        else{
             $setData = [
                 'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
-                'contiene' => $contiene,
+                'contiene' => $this->request->getPost('contiene,'),
                 'e' => $this->request->getPost('e'),
                 'f' => $this->request->getPost('f'),
                 'g' => $this->request->getPost('g'),
@@ -113,7 +119,7 @@ class Home extends BaseController
                 'agraria' => 0,
                 'bodega' => 0,
                 'bodega' => 0,
-                'contiene' => 0,
+                'contiene' => 50,
                 'e' => 0,
                 'f' => 0,
                 'g' => 0,
@@ -122,7 +128,7 @@ class Home extends BaseController
                 'piezas' => 0,
                 'sumatotal' => 0,
                 "existencia"=>$line[3],
-                "diferencia"=>$line[3]//((int)$line[3]-2*((int)$line[3]))
+                "diferencia"=>((int)$line[3]-2*((int)$line[3]))
             ];
 
             $myArray[] =$reg;
@@ -143,7 +149,14 @@ class Home extends BaseController
     }
     public function historial()
     {
-        return view('historial');
+        date_default_timezone_set('America/Mexico_City');
+        $fechahistorial = $this->request->getPost('fechahistorial');
+        $pieces = explode("-",$fechahistorial);
+        $fechahistorial = $pieces[2]."-".$pieces[1]."-".$pieces[0];
+        $consulta= new Consultas();
+        $obj = $consulta->selecthistorial($fechahistorial);
+        $data['jsonres'] = $obj;
+        return view('historial',$data);
     }
     public function existehistorial(){
         date_default_timezone_set('America/Mexico_City');
@@ -154,7 +167,6 @@ class Home extends BaseController
     }
     public function guardarhistorial()
     {
-        
         date_default_timezone_set('America/Mexico_City');
         $fechaActual = date("d-m-Y");
         $consulta= new Consultas();
@@ -187,5 +199,18 @@ class Home extends BaseController
 
         echo json_encode($obj2);
     }
+    public function actualizaralix()
+    {
+       
+        $codigo = [
+            'codigo' => $this->request->getPost('codigo')
+        ];
+        $setData = [
+            'existencia' => $this->request->getPost('existencia')
+        ];
+        $consulta2= new Consultas();
+        $obj2 = $consulta2->updatealix($codigo,$setData);
 
+        echo json_encode($obj2);
+    }
 }

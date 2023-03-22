@@ -22,6 +22,7 @@ class App extends BaseConfig
      * explicitly and never rely on auto-guessing, especially in production
      * environments.
      */
+    //public string $baseURL = 'http://192.168.1.196/inventariotio/';
     public string $baseURL = 'http://localhost/inventariotio/';
 
     /**

@@ -23,12 +23,12 @@ class Database extends Config
 
     /**
      * The default database connection.
-     */
+     *
     public array $default = [
         'DSN'      => '',
-        'hostname' => 'localhost',
+        'hostname' => '192.168.1.196',
         'username' => 'root',
-        'password' => '2950',
+        'password' => 'DTIadmin100N@Z',
         'database' => 'inventarios',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
@@ -44,30 +44,28 @@ class Database extends Config
         'port'     => 3306,
     ];
 
-    /**
+    *
      * This database connection is used when
      * running PHPUnit database tests.
      */
-    public array $tests = [
-        'DSN'         => '',
-        'hostname'    => '127.0.0.1',
-        'username'    => '',
-        'password'    => '',
-        'database'    => ':memory:',
-        'DBDriver'    => 'SQLite3',
-        'DBPrefix'    => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
-        'pConnect'    => false,
-        'DBDebug'     => true,
-        'charset'     => 'utf8',
-        'DBCollat'    => 'utf8_general_ci',
-        'swapPre'     => '',
-        'encrypt'     => false,
-        'compress'    => false,
-        'strictOn'    => false,
-        'failover'    => [],
-        'port'        => 3306,
-        'foreignKeys' => true,
-        'busyTimeout' => 1000,
+    public array $default = [
+        'DSN'      => '',
+        'hostname' => '127.0.0.1',
+        'username' => 'root',
+        'password' => '2950',
+        'database' => 'inventarios',
+        'DBDriver' => 'MySQLi',
+        'DBPrefix' => '',
+        'pConnect' => false,
+        'DBDebug'  => true,
+        'charset'  => 'utf8',
+        'DBCollat' => 'utf8_general_ci',
+        'swapPre'  => '',
+        'encrypt'  => false,
+        'compress' => false,
+        'strictOn' => false,
+        'failover' => [],
+        'port'     => 3306,
     ];
 
     public function __construct()

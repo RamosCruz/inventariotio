@@ -82,5 +82,19 @@
                 return [false];
             }
         }
+        public function updatealix($codigo,$setData){
+            $builder = $this->db->table('t_inventario');
+            $builder->set($setData);
+            $builder->where('codigo',$codigo);
+            $builder->update();
+            if ($this->db->affectedRows() > 0)
+            {
+                return [true];
+            }
+            else
+            {
+                return [false];
+            }
+        }
     }
 ?>

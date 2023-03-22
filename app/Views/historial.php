@@ -30,11 +30,7 @@
     </nav>
 <br>
     
-<div class="container">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <a type="button" class="btn btn-primary" href="<?php echo base_url('/inicio') ?>">Volver al inicio</a>
-    </div>
-</div>
+
    <?php 
 
    if(session('type')=="contabilidad"|| session('type')=="admin")
