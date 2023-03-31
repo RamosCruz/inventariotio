@@ -57,7 +57,7 @@ class Home extends BaseController
             'codigo' => $this->request->getPost('codigo')
         ];
         $actualizar = $this->request->getPost('actualizar');
-        if($actualizar=="contabilidad"){
+        if($actualizar=="contabilidad" || $actualizar=="agraria"){
             $setData = [
                 'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
                 'agraria' => $this->request->getPost('agraria'),
@@ -73,10 +73,10 @@ class Home extends BaseController
                 'diferencia' => $this->request->getPost('diferencia')
             ];
         }
-        else{
+        else if($actualizar=="bodega"){
             $setData = [
                 'facturasyremisiones' => $this->request->getPost('facturasyremisiones'),
-                'contiene' => $this->request->getPost('contiene,'),
+                'contiene' => $this->request->getPost('contiene'),
                 'e' => $this->request->getPost('e'),
                 'f' => $this->request->getPost('f'),
                 'g' => $this->request->getPost('g'),

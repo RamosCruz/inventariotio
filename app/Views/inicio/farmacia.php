@@ -344,12 +344,16 @@ echo '</tbody>
                         "sumatotal": tsumatotal,
                         "existencia": texistencia,
                         "diferencia": tdiferencia,
-                        "nota": tnota
+                        "nota": tnota,
+                        "actualizar": "agraria"
                     }
                     
                     guardarelemento(arregloPost);
                     
-                } );  
+                } );
+                $('input[type=search]').focus(function() {
+                    $('input[type=search]').val('');
+                });   
         }); //fin del function ready
 
         function cambioysuma(codigo, campo, valor)
@@ -377,7 +381,8 @@ echo '</tbody>
                 $("#"+codigo+"-sumatotal").html(sumatotal);
             }
 
-            var diferencia = parseInt($("#"+codigo+"-existencia").html())-$("#"+codigo+"-sumatotal").html();
+            //var diferencia = parseInt($("#"+codigo+"-existencia").html())-$("#"+codigo+"-sumatotal").html();
+            var diferencia = $("#"+codigo+"-sumatotal").html()-parseInt($("#"+codigo+"-existencia").html());
             $("#"+codigo+"-diferencia").html(diferencia)
 
             

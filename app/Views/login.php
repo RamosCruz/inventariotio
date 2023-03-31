@@ -10,7 +10,10 @@
 
     <title>Login</title>
   </head>
-  <body style="background-color: #FF5733;">
+  <body style="background: #FDC830;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #F37335, #FDC830);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #F37335, #FDC830); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+">
 
   <section class="vh-100" >
   <div class="container py-5 h-100">

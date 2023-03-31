@@ -1,12 +1,8 @@
 
 <br>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm">
-      
-    </div>
+
 <?php 
-echo '<div class="col-sm-10">
+echo '<div class="container-fluid " >
 <table id="inventario" class="table table-striped table-bordered">
     <thead class="thead-dark">
         <tr>
@@ -34,9 +30,9 @@ echo '<div class="col-sm-10">
     
 foreach ($json as $valor) {
     echo '<tr id="' .$valor['codigo']. '-fila">' ;
-    echo '<td class="col-auto" scope="row">' .$valor['codigo']. '</td>' ;
-    echo '<td>' .$valor['familia']. '</td>' ;
-    echo '<td class="col-auto">' .$valor['descripcion']. '</td>' ;
+    echo '<td class="col-auto" id="' .$valor['codigo']. '-codigo" >' .$valor['codigo']. '</td>' ;
+    echo '<td id="' .$valor['codigo']. '-familia">' .$valor['familia']. '</td>' ;
+    echo '<td class="col-auto" id="' .$valor['codigo']. '-descripcion">' .$valor['descripcion']. '</td>' ;
     echo '<td class="col-auto" style="display:none;"><input min="0" class="form-control ltinput" type="number" codigo="' .$valor['codigo']. '-facturasyremisiones" value="'.$valor['facturasyremisiones'].'"></td>' ;
     echo '<td class="col-auto" style="display:none;"><input min="0" class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-agraria" value="' .$valor['agraria']. '"></td>' ;
     echo '<td class="col-auto"><input min="0" class="form-control ltinput " type="number" codigo="' .$valor['codigo']. '-contiene" value="' .$valor['contiene']. '"></td>' ;
@@ -66,10 +62,6 @@ echo '</tbody>
 </table>
 </div>' ;
 ?>
-        <div class="col-sm">
-        </div>
-    </div>
-</div>
 <script>
             var tabladinamica = null;
             $(document).ready(function () 
@@ -78,7 +70,7 @@ echo '</tbody>
                     
                     
                     scrollY: 450, //tamaño de alto de tabla
-                    pageLength: 100, //numero de registros por paginado
+                    pageLength: 200, //numero de registros por paginado
                     ordering: false, //no ordenar tabla
                     rowGroup: {
                         dataSrc: 1
@@ -87,12 +79,12 @@ echo '</tbody>
                         {
                             target: 0, //en la columna 0
                             visible: false, //no mostrar
-                            searchable: false, //tampoco buscar
+                            //searchable: false, //tampoco buscar
                         },
                         {
                             target: 1, //en la columna 1
                             visible: false, //no mostrar
-                            searchable: false, //tampoco buscar
+                            //searchable: false, //tampoco buscar
                         },
                         {   
                             width: 10, 
@@ -390,12 +382,17 @@ echo '</tbody>
                         "sumatotal": tsumatotal,
                         "existencia": texistencia,
                         "diferencia": tdiferencia,
-                        "nota": tnota
+                        "nota": tnota,
+                        "actualizar": "bodega"
                     }
                     
                     guardarelemento(arregloPost);
                     
-                } );  
+                } ); 
+                
+                $('input[type=search]').focus(function() {
+                    $('input[type=search]').val('');
+                }); 
         }); //fin del function ready
 
         function cambioysuma(codigo, campo, valor)
@@ -560,7 +557,8 @@ echo '</tbody>
                 $("#"+codigo+"-sumatotal").html(sumatotal2);
             }
 
-            var diferencia = parseInt($("#"+codigo+"-existencia").html())-$("#"+codigo+"-sumatotal").html();
+            //var diferencia = parseInt($("#"+codigo+"-existencia").html())-$("#"+codigo+"-sumatotal").html();
+            var diferencia = $("#"+codigo+"-sumatotal").html()-parseInt($("#"+codigo+"-existencia").html());
             $("#"+codigo+"-diferencia").html(diferencia)
 
             
@@ -569,6 +567,7 @@ echo '</tbody>
         }
         function guardarelemento(arreglo)
         {
+            
             $.post("<?php echo base_url('cambiar')?>",   // url
             arreglo, // data to be submit
             function(data, status, jqXHR) {// success callback
